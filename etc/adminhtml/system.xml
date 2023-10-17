@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment" translate="label" type="text" sortOrder="500" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <group id="paytrail" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Paytrail Payment Service for Adobe Commerce</label>
+                <group id="pwa" translate="label" type="text" sortOrder="90" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>PWA Settings</label>
+                    <field id="use_pwa" translate="label" type="select" sortOrder="40" showInDefault="1"
+                           showInWebsite="0"
+                           showInStore="0" canRestore="1">
+                        <label>Is PWA Studio frontend in use</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="pwa_frontend_url" translate="label" type="text" sortOrder="81" showInDefault="1"
+                           showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Url of Magento PWA Studio storefront</label>
+                        <validate>validate-url</validate>
+                        <comment>Remember to add `paytrail` to upward allowlist configuration for bypassing Paytrail
+                            requests directly to magento backend.
+                        </comment>
+                        <depends>
+                            <field id="use_pwa">1</field>
+                        </depends>
+                    </field>
+                </group>
+            </group>
+        </section>
+    </system>
+</config>

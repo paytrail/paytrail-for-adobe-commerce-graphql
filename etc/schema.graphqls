@@ -1,0 +1,26 @@
+input RestoreQuoteInput {
+    cart_id: String!
+}
+
+type Mutation {
+    restoreQuote(input: RestoreQuoteInput): String @doc(description:"Restore Paytrail cancelled payment quote by masked Cart ID") @resolver(class: "Paytrail\\PaymentServiceGraphQl\\Model\\Resolver\\RestoreQuote")
+
+}
+
+type PaytrailPaymentUrl {
+    payment_url: String
+    error: String
+}
+
+type Order {
+    paytrail_payment_url: PaytrailPaymentUrl! @resolver(class: "Paytrail\\PaymentServiceGraphQl\\Model\\Resolver\\PaymentUrl")
+}
+
+type CustomerOrder {
+    paytrail_payment_url: PaytrailPaymentUrl! @resolver(class: "Paytrail\\PaymentServiceGraphQl\\Model\\Resolver\\PaymentUrl")
+}
+
+
+type Query {
+    paytrailCart(order_id: String!, cart_id: String!): Cart @resolver (class: "Paytrail\\PaymentServiceGraphQl\\Model\\Resolver\\PaytrailCart") @doc(description:"Returns information about shopping cart") @cache(cacheable: false)
+}
