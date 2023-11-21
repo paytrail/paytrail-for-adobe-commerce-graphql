@@ -2,25 +2,80 @@ input RestoreQuoteInput {
     cart_id: String!
 }
 
+input PaytrailInput {
+    provider: String! @doc(description:"Paytrail provider ID")
+}
+
+input PaymentMethodInput @doc(description:"allows to add specific paytrail method selection to the request") {
+    paytrail: PaytrailInput @doc(description:"Required input for Express Checkout and Payments Standard payments.")
+}
+
+
 type Mutation {
     restoreQuote(input: RestoreQuoteInput): String @doc(description:"Restore Paytrail cancelled payment quote by masked Cart ID") @resolver(class: "Paytrail\\PaymentServiceGraphQl\\Model\\Resolver\\RestoreQuote")
-
-}
-
-type PaytrailPaymentUrl {
-    payment_url: String
-    error: String
-}
-
-type Order {
-    paytrail_payment_url: PaytrailPaymentUrl! @resolver(class: "Paytrail\\PaymentServiceGraphQl\\Model\\Resolver\\PaymentUrl")
-}
-
-type CustomerOrder {
-    paytrail_payment_url: PaytrailPaymentUrl! @resolver(class: "Paytrail\\PaymentServiceGraphQl\\Model\\Resolver\\PaymentUrl")
 }
 
 
 type Query {
-    paytrailCart(order_id: String!, cart_id: String!): Cart @resolver (class: "Paytrail\\PaymentServiceGraphQl\\Model\\Resolver\\PaytrailCart") @doc(description:"Returns information about shopping cart") @cache(cacheable: false)
+    paytrailConfigData(
+        cart_id: String!
+    ): PaytrailConfig
+    @resolver (class: "Paytrail\\PaymentServiceGraphQl\\Model\\Resolver\\PaytrailConfig")
+    @doc(description:"Returns Paytrail configuration")
+    @cache(cacheable: false)
+
+    paytrailCart(
+        order_id: String!
+        cart_id: String!
+    ): Cart
+    @resolver (class: "Paytrail\\PaymentServiceGraphQl\\Model\\Resolver\\PaytrailCart")
+    @doc(description:"Returns information about shopping cart")
+    @cache(cacheable: false)
+}
+
+type PaytrailPaymentDetails {
+    payment_url: String
+    payment_form: PaytrailProviderForm
+    error: String
+}
+
+type PaytrailProviderForm {
+    form: String
+    method: String
+    action: String
+    inputs: [PaytrailProviderFormInput]
+}
+
+type PaytrailProviderFormInput {
+    name: String
+    value: String
+    type: String
+}
+
+type PaytrailConfig {
+    groups: [PaytrailConfigGroup]
+}
+
+type PaytrailConfigGroup {
+    id: String,
+    name: String,
+    icon: String,
+    providers: [PaytrailConfigMethod]
+}
+
+type PaytrailConfigMethod {
+    checkoutId: String,
+    id: String,
+    name: String,
+    group: String,
+    icon: String,
+    svg: String
+}
+
+type Order {
+    paytrail_payment_details: PaytrailPaymentDetails! @resolver(class: "Paytrail\\PaymentServiceGraphQl\\Model\\Resolver\\PaymentDetails")
+}
+
+type CustomerOrder {
+    paytrail_payment_details: PaytrailPaymentDetails! @resolver(class: "Paytrail\\PaymentServiceGraphQl\\Model\\Resolver\\PaymentDetails")
 }

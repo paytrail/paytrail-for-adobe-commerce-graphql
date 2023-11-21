@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "paytrail/paytrail-for-adobe-commerce": "^1.4"
+        "paytrail/paytrail-for-adobe-commerce": "*"
     },
     "version": "1.0.0",
     "type": "magento2-module",
