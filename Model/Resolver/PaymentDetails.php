@@ -98,10 +98,14 @@ class PaymentDetails implements ResolverInterface
             $order->getPayment()->getAdditionalInformation()['provider'] ?? ''
         );
 
+        $cardType = $this->paymentProvidersData->getCardType(
+            $order->getPayment()->getAdditionalInformation()['provider'] ?? ''
+        );
+
         if (!$paymentMethodId) {
             return null;
         }
 
-        return $this->providerForm->getFormParams($response, $paymentMethodId);
+        return $this->providerForm->getFormParams($response, $paymentMethodId, $cardType);
     }
 }
