@@ -11,4 +11,9 @@
                 type="Paytrail\PaymentServiceGraphQl\Plugin\GetFrontendUrl"
                 sortOrder="100"/>
     </type>
+    <type name="Paytrail\PaymentServiceGraphQl\Model\Resolver\PaymentDetails">
+        <arguments>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
 </config>
