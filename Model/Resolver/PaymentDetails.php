@@ -3,9 +3,12 @@
 namespace Paytrail\PaymentServiceGraphQl\Model\Resolver;
 
 use Magento\Checkout\Model\Session;
+use Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\GraphQl\Config\Element\Field;
+use Magento\Framework\GraphQl\Query\Resolver\ContextInterface;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
+use Magento\Payment\Gateway\Command\CommandException;
 use Magento\Payment\Gateway\Command\CommandManagerPoolInterface;
 use Magento\Sales\Model\Order;
 use Paytrail\PaymentService\Exceptions\CheckoutException;
@@ -17,6 +20,15 @@ use Psr\Log\LoggerInterface;
 
 class PaymentDetails implements ResolverInterface
 {
+    /**
+     * Class constructor.
+     *
+     * @param Session $checkoutSession
+     * @param LoggerInterface $logger
+     * @param CommandManagerPoolInterface $commandManagerPool
+     * @param PaymentProvidersData $paymentProvidersData
+     * @param ProviderForm $providerForm
+     */
     public function __construct(
         private readonly Session                     $checkoutSession,
         private readonly LoggerInterface             $logger,
@@ -27,8 +39,10 @@ class PaymentDetails implements ResolverInterface
     }
 
     /**
+     * Resolve function.
+     *
      * @param Field $field
-     * @param $context
+     * @param ContextInterface $context
      * @param ResolveInfo $info
      * @param array|null $value
      * @param array|null $args
@@ -59,10 +73,13 @@ class PaymentDetails implements ResolverInterface
     }
 
     /**
+     * Get Paytrail payment.
+     *
      * @param Order $order
      *
      * @return PaymentResponse
-     * @throws CheckoutException
+     * @throws NotFoundException
+     * @throws CommandException
      */
     private function getPaytrailPayment(Order $order): PaymentResponse
     {
@@ -87,6 +104,8 @@ class PaymentDetails implements ResolverInterface
     }
 
     /**
+     * Get form parameters for selected provider.
+     *
      * @param PaymentResponse $response
      * @param Order $order
      *

@@ -15,11 +15,10 @@ class PaytrailConfig implements ResolverInterface
 
     /**
      * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
-     * @param CartRepositoryInterface $cartRepository
+     * @param \Paytrail\PaymentService\Model\Ui\ConfigProvider $configProvider
      */
     public function __construct(
         private readonly MaskedQuoteIdToQuoteIdInterface                  $maskedQuoteIdToQuoteId,
-        private readonly CartRepositoryInterface                          $cartRepository,
         private readonly \Paytrail\PaymentService\Model\Ui\ConfigProvider $configProvider
     ) {
     }
@@ -33,11 +32,9 @@ class PaytrailConfig implements ResolverInterface
             throw new GraphQlInputException(__('Required parameter "cart_id" is missing'));
         }
 
-        $cartId = $this->maskedQuoteIdToQuoteId->execute($args['cart_id']);
         $config = $this->configProvider->getConfig();
 
         $methodGroups = $config['payment']['paytrail']['method_groups'];
-
 
         return [
             'groups' => $methodGroups
