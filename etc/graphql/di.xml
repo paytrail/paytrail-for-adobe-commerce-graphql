@@ -5,7 +5,9 @@
     <type name="Magento\QuoteGraphQl\Model\Cart\Payment\AdditionalDataProviderPool">
         <arguments>
             <argument name="dataProviders" xsi:type="array">
-                <item name="paytrail" xsi:type="object">Paytrail\PaymentServiceGraphQl\Model\PaytrailAdditionalDataProvider</item>
+                <item name="paytrail" xsi:type="object">
+                    Paytrail\PaymentServiceGraphQl\Model\PaytrailAdditionalDataProvider
+                </item>
             </argument>
         </arguments>
     </type>
