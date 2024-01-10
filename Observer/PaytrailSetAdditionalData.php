@@ -24,9 +24,12 @@ class PaytrailSetAdditionalData extends AbstractDataAssignObserver
         $dataObject = $this->readDataArgument($observer);
 
         $additionalData = $dataObject->getData(PaymentInterface::KEY_ADDITIONAL_DATA);
-        if (isset($additionalData['additional_information']) and isset($additionalData['additional_information']['provider'])) {
+        if (isset($additionalData['additional_information'])
+            && isset($additionalData['additional_information']['provider'])
+        ) {
             $additionalData = $additionalData['additional_information'];
         }
+
         if (!is_array($additionalData)) {
             return;
         }

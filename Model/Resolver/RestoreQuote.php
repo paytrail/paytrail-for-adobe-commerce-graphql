@@ -19,6 +19,7 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
+use Magento\Framework\GraphQl\Query\Resolver\ContextInterface;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Quote\Api\CartRepositoryInterface;
@@ -27,7 +28,6 @@ use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
 
 class RestoreQuote implements ResolverInterface
 {
-
     /**
      * RestoreQuote constructor.
      *
@@ -41,11 +41,22 @@ class RestoreQuote implements ResolverInterface
     }
 
     /**
-     * @inheritdoc
+     * Resolve masked cart id to quote id
+     *
+     * @param Field $field
+     * @param ContextInterface $context
+     * @param ResolveInfo $info
+     * @param array|null $value
+     * @param array|null $args
+     *
+     * @return string
+     * @throws GraphQlAuthorizationException
+     * @throws GraphQlInputException
+     * @throws GraphQlNoSuchEntityException
      */
     public function resolve(
         Field       $field,
-                    $context,
+        $context,
         ResolveInfo $info,
         array       $value = null,
         array       $args = null
@@ -66,6 +77,8 @@ class RestoreQuote implements ResolverInterface
     }
 
     /**
+     * Get cart for user
+     *
      * @param string $cartHash
      * @param int|null $customerId
      * @param int $storeId
@@ -113,7 +126,11 @@ class RestoreQuote implements ResolverInterface
     }
 
     /**
+     * Restore Quote
+     *
      * @param CartInterface $cart
+     *
+     * @return void
      */
     private function restoreQuote(CartInterface $cart): void
     {
