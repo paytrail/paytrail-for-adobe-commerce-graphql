@@ -14,12 +14,18 @@ use Magento\Sales\Model\Order;
 use Paytrail\PaymentService\Exceptions\CheckoutException;
 use Paytrail\PaymentService\Gateway\Config\Config;
 use Paytrail\PaymentService\Model\ProviderForm;
+use Paytrail\PaymentService\Model\Receipt\ProcessService;
 use Paytrail\PaymentService\Model\Ui\DataProvider\PaymentProvidersData;
 use Paytrail\SDK\Response\PaymentResponse;
 use Psr\Log\LoggerInterface;
 
 class PaymentDetails implements ResolverInterface
 {
+
+    /**
+     * @var string
+     */
+    private string $errorMsg;
     /**
      * Class constructor.
      *
@@ -28,13 +34,15 @@ class PaymentDetails implements ResolverInterface
      * @param CommandManagerPoolInterface $commandManagerPool
      * @param PaymentProvidersData $paymentProvidersData
      * @param ProviderForm $providerForm
+     * @param ProcessService $processService
      */
     public function __construct(
         private readonly Session                     $checkoutSession,
         private readonly LoggerInterface             $logger,
         private readonly CommandManagerPoolInterface $commandManagerPool,
         private readonly PaymentProvidersData        $paymentProvidersData,
-        private readonly ProviderForm                $providerForm
+        private readonly ProviderForm                $providerForm,
+        private readonly ProcessService              $processService
     ) {
     }
 
@@ -80,6 +88,7 @@ class PaymentDetails implements ResolverInterface
      * @return PaymentResponse
      * @throws NotFoundException
      * @throws CommandException
+     * @throws CheckoutException
      */
     private function getPaytrailPayment(Order $order): PaymentResponse
     {

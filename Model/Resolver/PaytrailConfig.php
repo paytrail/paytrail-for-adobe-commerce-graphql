@@ -34,7 +34,7 @@ class PaytrailConfig implements ResolverInterface
 
         $config = $this->configProvider->getConfig();
 
-        $methodGroups = $config['payment']['paytrail']['method_groups'];
+        $methodGroups = $config['payment']['paytrail']['method_groups'] ?? [];
 
         return [
             'groups' => $methodGroups
