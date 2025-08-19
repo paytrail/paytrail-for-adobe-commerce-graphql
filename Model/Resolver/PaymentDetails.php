@@ -57,7 +57,7 @@ class PaymentDetails implements ResolverInterface
      *
      * @return string[]
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null): array
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null): array
     {
         $result = [
             'payment_url'       => '',
