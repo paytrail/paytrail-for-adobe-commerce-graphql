@@ -18,7 +18,7 @@ class PaytrailConfig implements ResolverInterface
      * @param \Paytrail\PaymentService\Model\Ui\ConfigProvider $configProvider
      */
     public function __construct(
-        private readonly MaskedQuoteIdToQuoteIdInterface                  $maskedQuoteIdToQuoteId,
+        private readonly MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
         private readonly \Paytrail\PaymentService\Model\Ui\ConfigProvider $configProvider
     ) {
     }
@@ -26,7 +26,7 @@ class PaytrailConfig implements ResolverInterface
     /**
      * @inheritdoc
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, array $value = [], array $args = [])
     {
         if (empty($args['cart_id'])) {
             throw new GraphQlInputException(__('Required parameter "cart_id" is missing'));
