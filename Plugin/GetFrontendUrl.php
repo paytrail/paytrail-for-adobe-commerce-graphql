@@ -3,6 +3,7 @@
 namespace Paytrail\PaymentServiceGraphQl\Plugin;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\QuoteIdMaskFactory;
 use Magento\Sales\Model\Order;
@@ -104,8 +105,11 @@ class GetFrontendUrl
     private function getBaseUrl(): string
     {
         $baseUrl = '';
-        if ($this->config->isSetFlag('payment/paytrail/pwa/use_pwa')) {
-            $baseUrl = $this->config->getValue('payment/paytrail/pwa/pwa_frontend_url');
+        if ($this->config->isSetFlag('payment/paytrail/pwa/use_pwa', ScopeInterface::SCOPE_STORE)) {
+            $baseUrl = $this->config->getValue(
+                'payment/paytrail/pwa/pwa_frontend_url',
+                ScopeInterface::SCOPE_STORE
+            );
         }
 
         return $baseUrl;
